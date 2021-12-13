@@ -29,9 +29,10 @@ echo \
 
 ### Install Docker Engine
 echo -e "${GREEN} Install Docker Engine ${NC}"
-sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io -y
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 
+sleep 3s
 
 echo -e "${GREEN} Ajout de docker au systemd${NC}"
 sudo cp /lib/systemd/system/docker.service /etc/systemd/system/

@@ -5,6 +5,55 @@ ORANGE="\e[33m"
 RED="\e[31m"
 NC="\e[0m" # No Color
 
+# Install Docker"
+echo -e "${GREEN} Install Docker ${NC}"
+sudo apt-get update
+#sudo apt install --no-install-recommends apt-transport-https ca-certificates curl gnupg2 lsb-release -y
+#OS_RELEASE=$(cat /etc/os-release | grep -w ID | sed 's/ID=//')
+#curl -fsSL https://download.docker.com/linux/${OS_RELEASE}/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+#echo \
+#  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/${OS_RELEASE} \
+#  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get install \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release\
+    -y
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+### Install Docker Engine
+echo -e "${GREEN} Install Docker Engine ${NC}"
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io -y
+
+
+echo -e "${GREEN} Ajout de docker au systemd${NC}"
+sudo cp /lib/systemd/system/docker.service /etc/systemd/system/
+echo -e "${GREEN} Exposition du demon docker ${NC}"
+sudo sed -i 's/\ -H\ fd:\/\//\ -H\ fd:\/\/\ -H\ tcp:\/\/127.0.0.1:2375/g' /etc/systemd/system/docker.service
+sudo systemctl daemon-reload
+sudo systemctl restart docker.service
+
+### Install docker-compose
+echo -e "${GREEN} Install docker-compose ${NC}"
+sudo apt-get update
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+## Installation de DOCKER DEV BOX
+echo -e "${GREEN} Install Docker DEV BOX ${NC}"
+curl -L https://github.com/inetum-orleans/docker-devbox/raw/master/installer | bash
+
+### Ajout de l'user au groupe docker
+echo -e "${GREEN} Ajout de l'utilisateur ${USER} au groupe docker ${NC}"
+sudo usermod -aG docker "$USER"
+
 export USERPROFILEPATH=$(wslpath "$(wslvar USERPROFILE)" | sed 's/\r//')
 export WSL_HOST_IP=$(ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | sed 's/\r//')
 
@@ -31,47 +80,6 @@ cat << EOF >> ~/.bashrc
 export WSL_HOST_IP=$(ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
 
 EOF
-
-# Install Docker"
-echo -e "${GREEN} Install Docker ${NC}"
-sudo apt update
-#sudo apt install --no-install-recommends apt-transport-https ca-certificates curl gnupg2 lsb-release -y
-#OS_RELEASE=$(cat /etc/os-release | grep -w ID | sed 's/ID=//')
-#curl -fsSL https://download.docker.com/linux/${OS_RELEASE}/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-#echo \
-#  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/${OS_RELEASE} \
-#  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-### Install Docker Engine
-echo -e "${GREEN} Install Docker Engine ${NC}"
-sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io -y
-
-### Ajout de l'user au groupe docker
-echo -e "${GREEN} Ajout de l'utilisateur ${USER} au groupe docker ${NC}"
-sudo usermod -aG docker $USER
-
-echo -e "${GREEN} Ajout de docker au systemd${NC}"
-sudo cp /lib/systemd/system/docker.service /etc/systemd/system/
-echo -e "${GREEN} Exposition du demon docker ${NC}"
-sudo sed -i 's/\ -H\ fd:\/\//\ -H\ fd:\/\/\ -H\ tcp:\/\/127.0.0.1:2375/g' /etc/systemd/system/docker.service
-sudo systemctl daemon-reload
-sudo systemctl restart docker.service
-
-### Install docker-compose
-echo -e "${GREEN} Install docker-compose ${NC}"
-sudo apt update
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
-## Installation de DOCKER DEV BOX
-echo -e "${GREEN} Install Docker DEV BOX ${NC}"
-curl -L https://github.com/inetum-orleans/docker-devbox/raw/master/installer | bash
-
 
 # Configuration globale DDB
 echo -e "${BLUE} Configuration globale DDB ${NC}"

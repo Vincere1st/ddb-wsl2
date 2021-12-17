@@ -20,7 +20,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 ## Installation de DOCKER DEV BOX
 echo -e "${GREEN} Install Docker DEV BOX ${NC}"
-#curl -L https://github.com/inetum-orleans/docker-devbox/raw/master/installer | bash
+curl -L https://github.com/inetum-orleans/docker-devbox/raw/master/installer | bash
 
 sudo apt install python3-pip -y
 

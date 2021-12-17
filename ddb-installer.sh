@@ -21,8 +21,9 @@ sudo chmod +x /usr/local/bin/docker-compose
 ## Installation de DOCKER DEV BOX
 echo -e "${GREEN} Install Docker DEV BOX ${NC}"
 #curl -L https://github.com/inetum-orleans/docker-devbox/raw/master/installer | bash
-curl https://github.com/inetum-orleans/docker-devbox-ddb/releases/latest/download/ddb-alpine --output docker-devbox-ddb
+
 sudo apt install python3-pip -y
+
 pip install docker-devbox-ddb
 
 ### Ajout de l'user au groupe docker

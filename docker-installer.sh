@@ -33,12 +33,12 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 
 sleep 3s
-
+echo -e "${GREEN} Install systemd on WSL2 ${NC}"
 git clone https://github.com/DamionGans/ubuntu-wsl2-systemd-script.git
-cd ubuntu-wsl2-systemd-script/
+cd ubuntu-wsl2-systemd-script || exit
 bash ubuntu-wsl2-systemd-script.sh
 
 echo -e "${BLUE}#############################################################################"
-echo -e "                  PLEASE LOG OUT AND reLOG IN and run ddb-installer.sh                "
+echo -e "                  PLEASE LOG OUT, reLOG IN and run ddb-installer.sh                "
 echo -e "###############################################################################${NC}"
 

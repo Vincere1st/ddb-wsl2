@@ -5,7 +5,7 @@ ORANGE="\e[33m"
 RED="\e[31m"
 NC="\e[0m" # No Color
 
-echo -e "${GREEN} Ajout de docker au systemd${NC}"
+echo -e "${GREEN} Add docker to systemd${NC}"
 sudo cp /lib/systemd/system/docker.service /etc/systemd/system/
 echo -e "${GREEN} Exposition du demon docker ${NC}"
 sudo sed -i 's/\ -H\ fd:\/\//\ -H\ fd:\/\/\ -H\ tcp:\/\/127.0.0.1:2375/g' /etc/systemd/system/docker.service
@@ -23,7 +23,7 @@ echo -e "${GREEN} Install Docker DEV BOX ${NC}"
 curl -L https://github.com/inetum-orleans/docker-devbox/raw/master/installer | bash
 
 ### Ajout de l'user au groupe docker
-echo -e "${GREEN} Ajout de l'utilisateur ${USER} au groupe docker ${NC}"
+echo -e "${GREEN} Add user ${USER} to docker group ${NC}"
 sudo usermod -aG docker "$USER"
 
 export USERPROFILEPATH=$(wslpath "$(wslvar USERPROFILE)" | sed 's/\r//')
@@ -54,7 +54,7 @@ export WSL_HOST_IP=$(ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
 EOF
 
 # Configuration globale DDB
-echo -e "${BLUE} Configuration globale DDB ${NC}"
+echo -e "${BLUE}Prepare the global configuration for DDB ${NC}"
 LOCAL_IP="${LOCAL_IP:=127.0.0.1}"
 if [ -f $HOME/.docker-devbox/ddb.yaml ]; then
 	touch $HOME/.docker-devbox/ddb.yaml
@@ -71,7 +71,7 @@ docker:
 EOF
 
 # Configuration locale DDB
-echo -e "${BLUE} Configuration locale DDB ${NC}"
+echo -e "${BLUE} Prepare the local configuration for DDB ${NC}"
 if [ -f $HOME/.docker-devbox/ddb.local.yaml ]; then
 	touch $HOME/.docker-devbox/ddb.local.yaml
 fi
@@ -89,6 +89,14 @@ shell:
   global_aliases:
     - dc
 EOF
+
+echo -e "${BLUE} Start traefik and portainer ${NC}"
+docker network create reverse-proxy
+cd ~/.docker-devbox/traefik || exit
+docker-compose up -d
+cd ../portainer || exit
+docker-compose up -d
+cd ~ || exit
 
 # Replace DDB_HOST_IP BY WSL_HOST_IP for XDebug on every logging
 echo -e "${BLUE} Replace DDB_HOST_IP BY WSL_HOST_IP for XDebug on every logging ${NC}"

@@ -45,6 +45,10 @@ sudo apt-get update
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
+### Ajout de l'user au groupe docker
+echo -e "${GREEN} Add user ${USER} to docker group ${NC}"
+sudo usermod -aG docker "$USER"
+
 echo -e "${BLUE}#############################################################################"
 echo -e "                  PLEASE LOG OUT, reLOG IN and run ddb-installer.sh                "
 echo -e "###############################################################################${NC}"

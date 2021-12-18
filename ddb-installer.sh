@@ -16,10 +16,6 @@ sudo systemctl restart docker.service
 echo -e "${GREEN} Install Docker DEV BOX ${NC}"
 curl -L https://github.com/inetum-orleans/docker-devbox/raw/master/installer | bash
 
-### Ajout de l'user au groupe docker
-echo -e "${GREEN} Add user ${USER} to docker group ${NC}"
-sudo usermod -aG docker "$USER"
-
 export USERPROFILEPATH=$(wslpath "$(wslvar USERPROFILE)" | sed 's/\r//')
 export WSL_HOST_IP=$(ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | sed 's/\r//')
 

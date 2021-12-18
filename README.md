@@ -50,7 +50,10 @@ At the end logout (type exit) and restart Ubuntu
         - Make sure your IPV4 DNS settings match this for IPV4:
     ![img.png](screen/ipv4.png)
           
-        - AND for IPV6:
+
+  - AND for IPV6:
+  
+
   ![img.png](screen/ipv6.png)
 
 Restart Ubuntu completely `wsl --shutdown Ubuntu`

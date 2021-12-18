@@ -60,11 +60,7 @@ Restart Ubuntu completely `wsl --shutdown Ubuntu`
 
 And normally all works: 
 
-In case of at start of Ubuntu you have this error:
-error: 0xffffffff
-This appear if the port 53 is use by another program.
-Prehaps it's is Acrylic DNS, so to test stop Acrylic DNS, and restart Ubuntu,  and if that uninstall Acrylic DNS the Windows Host file or try to configure the IPV6 port to 54 in configuration of Acrylic DNS.
-
+When starting Ubuntu, if you get this error: error: 0xffffffff This appears if port 53 is in use by another program. It might be Acrylic DNS, so to test, stop Acrylic DNS and restart Ubuntu, and if that's it uninstall Acrylic DNS and use Windows host file or try to set IPV6 port to 54 in setup DNS acrylic.
 
 
 Go to chrome and go to https://traefik.test or https://portainer.test

@@ -7,24 +7,14 @@ NC="\e[0m" # No Color
 
 echo -e "${GREEN} Add docker to systemd${NC}"
 sudo cp /lib/systemd/system/docker.service /etc/systemd/system/
-echo -e "${GREEN} Exposition du demon docker ${NC}"
+echo -e "${GREEN} Expose daemon docker ${NC}"
 sudo sed -i 's/\ -H\ fd:\/\//\ -H\ fd:\/\/\ -H\ tcp:\/\/127.0.0.1:2375/g' /etc/systemd/system/docker.service
 sudo systemctl daemon-reload
 sudo systemctl restart docker.service
 
-### Install docker-compose
-echo -e "${GREEN} Install docker-compose ${NC}"
-sudo apt-get update
-sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
 ## Installation de DOCKER DEV BOX
 echo -e "${GREEN} Install Docker DEV BOX ${NC}"
 curl -L https://github.com/inetum-orleans/docker-devbox/raw/master/installer | bash
-
-### Ajout de l'user au groupe docker
-echo -e "${GREEN} Add user ${USER} to docker group ${NC}"
-sudo usermod -aG docker "$USER"
 
 export USERPROFILEPATH=$(wslpath "$(wslvar USERPROFILE)" | sed 's/\r//')
 export WSL_HOST_IP=$(ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | sed 's/\r//')

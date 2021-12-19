@@ -14,7 +14,8 @@ sudo systemctl restart docker.service
 
 ## Installation de DOCKER DEV BOX
 echo -e "${GREEN} Install Docker DEV BOX ${NC}"
-curl -L https://github.com/inetum-orleans/docker-devbox/raw/master/installer | bash
+curl -L https://github.com/inetum-orleans/docker-devbox-ddb/releases/latest/download/ddb-linux -o ddb && chmod +x ddb
+sudo mv ./ddb /usr/local/bin/ddb
 
 export USERPROFILEPATH=$(wslpath "$(wslvar USERPROFILE)" | sed 's/\r//')
 export WSL_HOST_IP=$(ip addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | sed 's/\r//')
